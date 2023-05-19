@@ -1,9 +1,9 @@
-local openshit = Instance.new("ScreenGui")
 local mainopen = Instance.new("TextButton")
 local mainopens = Instance.new("UICorner")
 local loki = Instance.new("ImageLabel")
 local posto = Instance.new("UIStroke")
 
+local openshit = Instance.new("ScreenGui")
 openshit.Name = "openshit"
 openshit.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 openshit.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -104,9 +104,7 @@ local Update = {}
 
 local DiscordLib = {}
 
-local TweenService = game:GetService("TweenService")
 local Balaraja = Instance.new("ScreenGui")
-
 Balaraja.Name = "Balaraja"
 Balaraja.Parent = game.CoreGui
 Balaraja.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -127,7 +125,7 @@ Notilistlayout.Parent = NotiFrame
 Notilistlayout.SortOrder = Enum.SortOrder.LayoutOrder
 Notilistlayout.Padding = UDim.new(0, 5)
 
-function DiscordLib:Notification(titel, text, delays)
+function DiscordLib:Notification(title, text, delays)
     local TitleFrame = Instance.new("Frame")
     TitleFrame.Name = "TitleFrame"
     TitleFrame.Parent = NotiFrame
@@ -149,30 +147,66 @@ function DiscordLib:Notification(titel, text, delays)
     TextLabel.Name = "TextLabel"
     TextLabel.Parent = TitleFrame
     TextLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-    TextLabel.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     TextLabel.BackgroundTransparency = 1
-    TextLabel.BorderSizePixel = 0
     TextLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
-    TextLabel.Size = UDim2.new(0.9, 0, 0.9, 0)
+    TextLabel.Size = UDim2.new(1, 0, 1, 0)
     TextLabel.Font = Enum.Font.SourceSans
     TextLabel.Text = text
     TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TextLabel.TextScaled = true
-    TextLabel.TextSize = 14
-    TextLabel.TextWrapped = true
-    TextLabel.TextXAlignment = Enum.TextXAlignment.Center
-    TextLabel.TextYAlignment = Enum.TextYAlignment.Center
+    TextLabel.TextSize = 18
+    TextLabel.TextStrokeTransparency = 0.5
 
-    spawn(function()
+    local TitleLabel = Instance.new("TextLabel")
+    TitleLabel.Name = "TitleLabel"
+    TitleLabel.Parent = TitleFrame
+    TitleLabel.AnchorPoint = Vector2.new(0, 0.5)
+    TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabel.BackgroundTransparency = 1
+    TitleLabel.Position = UDim2.new(0, 20, 0.5, 0)
+    TitleLabel.Size = UDim2.new(0.6, 0, 1, 0)
+    TitleLabel.Font = Enum.Font.SourceSansSemibold
+    TitleLabel.Text = title
+    TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabel.TextSize = 22
+    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    TitleLabel.TextStrokeTransparency = 0.5
+
+    local ExitButton = Instance.new("TextButton")
+    ExitButton.Name = "ExitButton"
+    ExitButton.Parent = TitleFrame
+    ExitButton.AnchorPoint = Vector2.new(1, 0.5)
+    ExitButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ExitButton.BackgroundTransparency = 1
+    ExitButton.Position = UDim2.new(1, -20, 0.5, 0)
+    ExitButton.Size = UDim2.new(0, 20, 0, 20)
+    ExitButton.Font = Enum.Font.SourceSans
+    ExitButton.Text = "X"
+    ExitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ExitButton.TextSize = 20
+    ExitButton.TextStrokeTransparency = 0.5
+
+    -- Função para fechar a notificação
+    local function CloseNotification()
+        NotiFrame:TweenPosition(UDim2.new(1, -210, 1, 100), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.5, true, function()
+            TitleFrame:Destroy()
+            if #NotiFrame:GetChildren() <= 2 then
+                NotiFrame:Destroy()
+            end
+        end)
+    end
+
+    ExitButton.MouseButton1Click:Connect(CloseNotification) -- Conecta o evento de clique do botão de fechar
+
+    NotiFrame:TweenPosition(UDim2.new(1, -210, 0.95, -((Notilistlayout.AbsoluteContentSize.Y + 10) * #Notilistlayout:GetChildren())), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.5, true)
+
+    if delays then
         wait(delays)
-        TitleFrame:Destroy()
-    end)
+        CloseNotification()
+    end
 end
-        TitleFrame.Position =  UDim2.new(0.5, 0, 0.5,0)
-        TitleFrame.Size = UDim2.new(0, 0, 0, 0)
-        TitleFrame.ClipsDescendants = true
-        TitleFrame.BackgroundTransparency = 0
-    
+
+return DiscordLib  
         local ConnerTitile = Instance.new("UICorner")
     
         ConnerTitile.CornerRadius = UDim.new(0, 4)
